@@ -2,16 +2,19 @@ import React from "react";
 
 const Note = (props) => (
     <li className="note">
+        {console.log(props.note)}
         <input
           type="text"
           aria-label="Title"
           placeholder="ToDo Today"
           className="note__title"
+          value={props.note.title}
         />
         <textarea
           aria-label="Description"
           placeholder="Take a nap!"
           className="note__description"
+          value={props.note.description}
         />
         <span className="note__delete">X</span>
     </li>

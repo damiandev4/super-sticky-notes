@@ -31,9 +31,10 @@ class App extends Component {
   render() { 
     return (
       <div className= "app">
-        <Header />
-        <NotesList />
+        <Header searchText={this.state.searchText} />
+        <NotesList notes={this.state.notes} />
       </div>
+
     );
   }
 }

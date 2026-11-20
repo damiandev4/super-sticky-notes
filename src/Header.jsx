@@ -7,8 +7,6 @@ const Header = (props) => (
         <button className="add-new" onClick={props.addNote}> + New Note</button>
     {/* one website its  */}
     {/* <button onClick={props.addNote} className="add-new"> + New Note </button> */}
-        
-        
         <div className="search-field">
           <img
             src="magnifying-glass-solid-full.svg"

@@ -4,34 +4,35 @@ import NotesList from "./NotesList.jsx";
 import './App.css'
 
 class App extends Component {
-  state = {
-    notes: [
-     {
-        id: 0,
-        title: "eat",
-        description: "reese peanut butter cups",
-        doesMatchSearch: true
-      },
-      {
-        id: 1,
-        title: "sleep",
-        description: "eight hours",
-        doesMatchSearch: true
-      },
-      {
-        id: 2,
-        title: "code",
-        description: "build an awesome ui",
-        doesMatchSearch: true
-      },
-    ],
-    searchText: "search",
-  };
+  
+state = {
+  notes: [
+    {
+      id: Date.now(),
+      title: "",
+      description: "",
+      doesMatchSearch: true,
+    },
+  ],
+  searchText: "",
+};
+
+  addNote = () => {
+    //create a new note (or object)
+    const newNote = {
+      id: Date.now(),
+      title: "",
+      description: "",
+      doesMatchSearch: true,
+    };
+    //add new note to existing notes array in state
+    this.setState({ notes: [newNote, ...this.state.notes]})
+  }
 
   render() { 
     return (
       <div className= "app">
-        <Header searchText={this.state.searchText} />
+        <Header addNote={this.addNote} searchText={this.state.searchText} />
         <NotesList notes={this.state.notes} />
       </div>
 

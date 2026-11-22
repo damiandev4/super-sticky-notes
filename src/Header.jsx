@@ -20,7 +20,7 @@ const Header = (props) => {
           type="text"
           id="search"
           placeholder="ToDo"
-          className="Search here"
+          className="search"
           value= {props.searchText}
           onChange={callSearch}  //Add an onChange event listener to the Header’s text input that calls the callback function
 

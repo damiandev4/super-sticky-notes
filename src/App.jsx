@@ -1,12 +1,18 @@
+import './App.css'
 import React, { Component } from "react";
 import Header from "./Header.jsx";
 import NotesList from "./NotesList.jsx";
-import './App.css'
 
 class App extends Component {
-  
   state = {
-    notes: [],
+    notes: [
+      {
+        id: Date.now(),
+        title: "",
+        description: "",
+        doesMatchSearch: true,
+      },
+    ],
     searchText: "",
   };
 
@@ -44,9 +50,9 @@ class App extends Component {
 
   onSearch = (text) => { // define method that will receive some text
     const newSearchtext = text.toLowerCase(); // convert the text the user submitted to all lower case letters
-    const updatedNotes = this.state.notes.map( note => { //map over the notes array and for each note object
-      if (!newSearchText) { //make sure user is searching for something
-        note.doesMatchsearch = true;
+    const updatedNotes = this.state.notes.map( (note) => { //map over the notes array and for each note object
+      if (!newSearchText) { //to make sure user is searching for something
+        note.doesMatchSearch = true;
         return note;
       } else {  // check title and description to see if they include the same text user submitted
         const title = note.title.toLowerCase(); //make sure everything is in lower case
@@ -61,22 +67,40 @@ class App extends Component {
           note.doesMatchSearch = false
         }*/ // this code does the same as the two lines below
         const hasmatch = titleMatch || descriptionMatch; 
-        note.doesMatchSearch = hasmatch; //Using the OR operator: ||, set the note object’s doesMatchSearch property to true if there is matching text and false if not
+        note.doesMatchSearch = hasMatch; //Using the OR operator: ||, set the note object’s doesMatchSearch property to true if there is matching text and false if not
         return note;
       }
     });
-    this.setState.state({ // set the state to update the search text and notes within state
+    this.setState({ // set the state to update the search text and notes within state
       notes: updatedNotes, //notes are now going to be the updatedNotes 
-     searchText: newSearchText, // same
+      searchText: newSearchText, // same
     });
   };
+
+  removeNote = (noteId) => { //this function will require the id of the note to remove
+    const updatedNotes = this.state.notes.filter( note => note.id !== noteId)
+// use this updated notes var and filter through notes array from state, for each note only return the new note as long as new noteID does not match id of note that was passed to use in this method, because thats the one we want to delete. 
+    this.setState({ notes: updatedNotes }); //set state and send the notes to updated
+  };
+
+  componentDidUpdate() {
+    const stringifyNotes= JSON.stringify(this.state.notes);
+    localStorage.setItem("savedNotes", stringifyNotes);
+}
+
+  componentDidMount() {
+    const stringifyNotes = localStorage.getItem("savedNotes");
+    if (stringifyNotes) {
+      const savedNotes = JSON.parse(stringifyNotes);
+      this.setState({ notes: savedNotes });
+    }
+  }
 
   render() { 
     return (
       <div className= "app">
         <Header onSearch={this.onSearch} addNote={this.addNote} searchText={this.state.searchText} />
-        //Pass the onSearch function to the Header component as props
-        <NotesList onType={this.onType} notes={this.state.notes} />
+        <NotesList removeNote={this.removeNote} onType={this.onType} notes={this.state.notes} />
       </div>
     );
   }
